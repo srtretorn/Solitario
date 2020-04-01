@@ -31,31 +31,54 @@ import java.util.Stack;
  */
 public class Mesa {
 
-    private final int FILAS = 4;
-    private final int COLUMNAS = 4;
+    private final int FILAS = 5;
+    private final int COLUMNAS = 5;
     private Stack<Carta>[][] montonInterior = new Stack[FILAS][COLUMNAS];
     private Stack<Carta>[] montonExterior;
     private Baraja b = new Baraja();
 
     public void crearMontonInterior() {
         Stack<Carta> baraja = b.crearBaraja();
-        System.out.println(baraja);
-        
-
-        for (int i = 0; i < FILAS; i++) {
-            for (int j = 0; j < COLUMNAS; j++) {
+        for (int i = 0; i < FILAS - 1; i++) {
+            for (int j = 0; j < COLUMNAS - 1; j++) {
+                montonInterior[i][j] = new Stack<>();
+                if (i == j || i + j == 3) {
+                    Carta cartaDiagonales = b.devolverCarta(baraja);
+                    montonInterior[i][j].push(cartaDiagonales);
+                }
                 Carta carta = b.devolverCarta(baraja);
-                System.out.print("[" + montonInterior[i][j].push(carta) + "]\t");
+                montonInterior[i][j].push(carta);
+                Carta cartaEncima = b.devolverCarta(baraja);
+                montonInterior[i][j].push(cartaEncima);
             }
-            System.out.println();
         }
-
     }
 
     public void crearMontonExterior() {
         montonExterior = new Stack[FILAS];
         for (int i = 0; i < FILAS; i++) {
-            System.out.print("[" + montonExterior[i].size() + "]");
+            montonExterior[i] = new Stack<>();
+            System.out.print("[" + montonExterior[i] + "]");
         }
     }
+
+    public String toStringMontonInterior() {
+        String toret = "";
+        for (int i = 0; i < FILAS - 1; i++) {
+            for (int j = 0; j < COLUMNAS - 1; j++) {
+                toret += "[" + montonInterior[i][j].peek() + "]\t";
+            }
+            toret += "\n";
+        }
+        return toret;
+    }
+
+    public String toStringMontonExterior() {
+        String toret = "";
+        for (int i = 0; i < FILAS - 1; i++) {
+            toret += "[" + montonExterior[i].peek() + "]\t";
+        }
+        return toret;
+    }
 }
+
