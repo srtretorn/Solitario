@@ -26,21 +26,21 @@ package solitario.Core;
 import java.util.Stack;
 
 /**
- *
  * @author AEDI
  */
 public class Mesa {
 
-    private final int FILAS = 5;
-    private final int COLUMNAS = 5;
+    private final int FILAS = 4;
+    private final int COLUMNAS = 4;
     private Stack<Carta>[][] montonInterior = new Stack[FILAS][COLUMNAS];
     private Stack<Carta>[] montonExterior;
     private Baraja b = new Baraja();
 
     public void crearMontonInterior() {
         Stack<Carta> baraja = b.crearBaraja();
-        for (int i = 0; i < FILAS - 1; i++) {
-            for (int j = 0; j < COLUMNAS - 1; j++) {
+
+        for (int i = 0; i < FILAS; i++) {
+            for (int j = 0; j < COLUMNAS; j++) {
                 montonInterior[i][j] = new Stack<>();
                 if (i == j || i + j == 3) {
                     Carta cartaDiagonales = b.devolverCarta(baraja);
@@ -49,6 +49,7 @@ public class Mesa {
                 Carta carta = b.devolverCarta(baraja);
                 montonInterior[i][j].push(carta);
                 Carta cartaEncima = b.devolverCarta(baraja);
+                cartaEncima.setBocaArriba(true);
                 montonInterior[i][j].push(cartaEncima);
             }
         }
@@ -64,8 +65,8 @@ public class Mesa {
 
     public String toStringMontonInterior() {
         String toret = "";
-        for (int i = 0; i < FILAS - 1; i++) {
-            for (int j = 0; j < COLUMNAS - 1; j++) {
+        for (int i = 0; i < FILAS; i++) {
+            for (int j = 0; j < COLUMNAS; j++) {
                 toret += "[" + montonInterior[i][j].peek() + "]\t";
             }
             toret += "\n";
@@ -75,7 +76,7 @@ public class Mesa {
 
     public String toStringMontonExterior() {
         String toret = "";
-        for (int i = 0; i < FILAS - 1; i++) {
+        for (int i = 0; i < FILAS; i++) {
             toret += "[" + montonExterior[i].peek() + "]\t";
         }
         return toret;
