@@ -8,7 +8,15 @@ package solitario.Core;
  * @author AEDI
  */
 public enum Palos {
-	OROS, COPAS, ESPADAS, BASTOS
-        
-        
+	OROS(0) , COPAS(1), ESPADAS(2), BASTOS(3);
+
+	private int i;
+
+	Palos(int i) {
+		this.i = i;
+	}
+
+	public int getIndexPalo(){
+		return i;
+	}
 }
