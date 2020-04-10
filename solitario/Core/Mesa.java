@@ -39,15 +39,28 @@ public class Mesa {
     public void crearMontonInterior() {
         Stack<Carta> baraja = b.crearBaraja();
 
+        //for para insertar las 16 primeras cartas
         for (int i = 0; i < FILAS; i++) {
             for (int j = 0; j < COLUMNAS; j++) {
                 montonInterior[i][j] = new Stack<>();
-                if (i == j || i + j == 3) {
-                    Carta cartaDiagonales = b.devolverCarta(baraja);
-                    montonInterior[i][j].push(cartaDiagonales);
-                }
                 Carta carta = b.devolverCarta(baraja);
                 montonInterior[i][j].push(carta);
+            }
+        }
+        
+        //for para insertar las diagonales
+        for (int i = 0; i < FILAS; i++) {
+            for (int j = 0; j < COLUMNAS; j++) {
+                if (i == j || i + j == 3) {
+                    Carta cartaDiagonal = b.devolverCarta(baraja);
+                    montonInterior[i][j].push(cartaDiagonal);
+                }
+            }
+        }
+        
+        //for para insertar las últimas 16 cartas
+        for (int i = 0; i < FILAS; i++) {
+            for (int j = 0; j < COLUMNAS; j++) {
                 Carta cartaEncima = b.devolverCarta(baraja);
                 cartaEncima.setBocaArriba(true);
                 montonInterior[i][j].push(cartaEncima);
