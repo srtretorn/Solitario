@@ -13,15 +13,13 @@ public class Solitario {
         Jugador jugador = new Jugador();
         System.out.println(jugador.getMesa());
         while (estado == Estado_Juego.EN_JUEGO) {
-            String err = "";
             try {
                 jugador.mover(jugador.origen(), jugador.destino());
                 estado(jugador);
             } catch (Exception exc) {
-                err = "ERROR: " + exc.getMessage();
+                System.err.println("ERROR: " + exc.getMessage());
             } finally {
                 System.out.println(jugador.getMesa());
-                System.out.println(err);
             }
         }
         if (estado == Estado_Juego.VICTORIA) {
@@ -51,7 +49,7 @@ public class Solitario {
                 int monton = 0;
                 while (!toret && monton != Palos.values().length) {
                     try {
-                        if (!mesa.getMontonInterior(filas, columnas).isEmpty()) {
+                        if (mesa.getMontonInterior(filas, columnas).isEmpty()) {
                             if (mesa.getMontonExterior(monton).isEmpty() && mesa.getMontonInterior(filas, columnas).peek().getNumero() == 1) {
                                 toret = true;
                             } else if (mesa.getMontonExterior(monton).peek().getNumero() + 1 == mesa.getMontonInterior(filas, columnas).peek().getNumero() && mesa.getMontonExterior(monton).peek().getPalo() == mesa.getMontonInterior(filas, columnas).peek().getPalo()) {

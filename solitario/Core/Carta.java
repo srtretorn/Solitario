@@ -12,9 +12,16 @@ public class Carta {
     private int numero;
 
     public Carta(Palos palo, int numero) throws Exception {
-        if ((palo != Palos.BASTOS && palo != Palos.COPAS && palo != Palos.ESPADAS && palo != Palos.OROS) || (numero < 1 || numero > 10)) {
+        int counter = 0;
+        for (Palos iter : Palos.values()) {
+            if (palo != iter) {
+                counter++;
+            }
+        }
+        if (counter != 3 || (numero < 1 || numero > 10)) {
             throw new Exception("Carta no valida");
         }
+
         this.palo = palo;
         this.numero = numero;
     }
@@ -38,7 +45,7 @@ public class Carta {
         }
         if (getNumero() == 10) {
             toret.append("Rey");
-        }else if(getNumero() != 8 && getNumero() != 9 && getNumero() != 10) {
+        } else if (getNumero() != 8 && getNumero() != 9 && getNumero() != 10) {
             toret.append(getNumero());
         }
         toret.append(" | ").append(getPalo());
