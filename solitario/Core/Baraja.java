@@ -3,36 +3,36 @@
 * Estructura: se utilizará un TAD adecuado
 * Funcionalidad: estando la baraja desordenada, devolverá la carta situada encima del montón de cartas
  */
-package solitario.Core;
+package Core;
 
 import java.util.Collections;
-
 import java.util.Stack;
 
 public class Baraja {
 
-    private final Stack<Carta> baraja = new Stack();
-    private char letra;
-    private Carta c;
+    public static final int NUMCARTAS = 40;
+    private Stack<Carta> cartas;
 
-    //Método que crea y desordena una baraja
-    public Stack<Carta> crearBaraja() {
-        for (int i = 1; i < 13; i++) {
-            if (i != 8 && i != 9) {
-                for(Palos palo: Palos.values()){
-                    letra = palo.toString().charAt(0);
-                    c = new Carta(i,letra);
-                    baraja.push(c);
+    public Baraja() {
+        cartas = new Stack<>();
+        for (int i = 1; i <= (NUMCARTAS / Palos.values().length); i++) {
+            for (Palos palo : Palos.values()) {
+                try {
+                    cartas.add(new Carta(palo, i));
+                } catch (Exception exc) {
+                    System.err.println("ERROR: " + exc.getMessage());
                 }
             }
         }
-        Collections.shuffle(baraja);
-        return baraja;
+        Collections.shuffle(cartas);
     }
-    
-    //Método que devuelve la carta superior
-    public Carta devolverCarta(Stack<Carta> b) {
-        return b.pop();
+
+    public boolean esVacia() {
+        return cartas.isEmpty();
+    }
+
+    public Carta devolverCarta() {
+        return cartas.pop();
     }
 
 }

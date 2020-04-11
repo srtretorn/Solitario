@@ -1,7 +1,6 @@
-package solitario.IU;
+package IU;
 
-import solitario.Core.*;
-import static solitario.IU.Solitario.inicioPartida;
+import static IU.Solitario.inicioPartida;
 
 /**
  *
@@ -10,9 +9,7 @@ import static solitario.IU.Solitario.inicioPartida;
 public class Main {
 
     public static void main(String[] args) {
-        //inicioPartida();
-        Mesa b = new Mesa();
-        b.crearMontonInterior();
+        inicioPartida();
     }
-	//Prueba de funcionamiento
+    //Prueba de funcionamiento
 }

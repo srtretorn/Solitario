@@ -1,22 +1,22 @@
 /*
  * Enumerado con los 4 palos de la baraja española
  */
-package solitario.Core;
+package Core;
 
 /**
  *
  * @author AEDI
  */
 public enum Palos {
-	OROS(0) , COPAS(1), ESPADAS(2), BASTOS(3);
+    OROS(0), COPAS(1), ESPADAS(2), BASTOS(3);
 
-	private int i;
+    private int i;
 
-	Palos(int i) {
-		this.i = i;
-	}
+    Palos(int i) {
+        this.i = i;
+    }
 
-	public int getIndexPalo(){
-		return i;
-	}
+    public int getIndexPalo() {
+        return i;
+    }
 }

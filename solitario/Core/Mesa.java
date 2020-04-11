@@ -21,7 +21,7 @@ clase para representar la mesa de juego, y en particular de los métodos que se 
         public void push(Carta item);
         // Produce: Introduce la Carta en el tope de la pila.
  */
-package solitario.Core;
+package Core;
 
 import java.util.Stack;
 
@@ -30,69 +30,93 @@ import java.util.Stack;
  */
 public class Mesa {
 
-    private final int FILAS = 4;
-    private final int COLUMNAS = 4;
-    private Stack<Carta>[][] montonInterior = new Stack[FILAS][COLUMNAS];
-    private Stack<Carta>[] montonExterior;
-    private Baraja b = new Baraja();
+    public static final int FILAS = 4;
+    public static final int COLUMNAS = 4;
+    private final Stack<Carta>[][] montonInterior;
+    private final Stack<Carta>[] montonExterior;
 
-    public void crearMontonInterior() {
-        Stack<Carta> baraja = b.crearBaraja();
-
-        //for para insertar las 16 primeras cartas
-        for (int i = 0; i < FILAS; i++) {
-            for (int j = 0; j < COLUMNAS; j++) {
-                montonInterior[i][j] = new Stack<>();
-                Carta carta = b.devolverCarta(baraja);
-                montonInterior[i][j].push(carta);
+    public Mesa() {
+        montonInterior = new Stack[FILAS][COLUMNAS];
+        for (Stack<Carta>[] montonInterior1 : montonInterior) {
+            for (int j = 0; j < montonInterior[0].length; j++) {
+                montonInterior1[j] = new Stack<>();
             }
         }
-        
-        //for para insertar las diagonales
-        for (int i = 0; i < FILAS; i++) {
-            for (int j = 0; j < COLUMNAS; j++) {
-                if (i == j || i + j == 3) {
-                    Carta cartaDiagonal = b.devolverCarta(baraja);
-                    montonInterior[i][j].push(cartaDiagonal);
+        montonExterior = new Stack[Palos.values().length];
+        for (int i = 0; i < montonExterior.length; i++) {
+            montonExterior[i] = new Stack<>();
+        }
+    }
+
+    public Stack<Carta> getMontonInterior(int i, int j) throws Exception {
+        if (i >= montonInterior.length || i < 0 || j >= montonInterior[0].length || j < 0) {
+            throw new Exception("Posicion no valida");
+        }
+        return montonInterior[i][j];
+    }
+
+    public int counterZonaInterior() {
+        int toret = 0;
+        for (Stack<Carta>[] filaMontones : montonInterior) {
+            for (Stack<Carta> monton : filaMontones) {
+                toret += monton.size();
+            }
+        }
+        return toret;
+    }
+
+    public Stack<Carta> getMontonExterior(int i) throws Exception {
+        if (i >= montonExterior.length || i < 0) {
+            throw new Exception("Posicion no valida");
+        }
+        return montonExterior[i];
+    }
+
+    public int counterZonaExterior() {
+        int toret = 0;
+        for (Stack<Carta> monton : montonExterior) {
+            toret += monton.size();
+        }
+        return toret;
+    }
+
+    public String toString(int i) {
+        StringBuilder toret = new StringBuilder();
+        toret.append("\n__________________________________________________________________________________________________\n");
+        for (int j = 0; j < montonInterior[0].length; j++) {
+            toret.append("\t Monton ").append((i * montonInterior[0].length) + j + 1).append("\t");
+        }
+        toret.append("\n\n");
+        for (int j = 0; j < montonInterior[0].length; j++) {
+            toret.append("\t");
+            if (i != 4) {
+                if (montonInterior[i][j].isEmpty()) {
+                    toret.append("  [VACIO]").append("\t");
+                } else {
+                    toret.append(montonInterior[i][j].peek()).append("\t");
+                }
+            } else {
+                if (montonExterior[j].isEmpty()) {
+                    toret.append("  [VACIO]").append("\t");
+                } else {
+                    toret.append(montonExterior[j].peek()).append("\t");
                 }
             }
         }
-        
-        //for para insertar las últimas 16 cartas
-        for (int i = 0; i < FILAS; i++) {
-            for (int j = 0; j < COLUMNAS; j++) {
-                Carta cartaEncima = b.devolverCarta(baraja);
-                cartaEncima.setBocaArriba(true);
-                montonInterior[i][j].push(cartaEncima);
-            }
-        }
+        return toret.toString();
     }
 
-    public void crearMontonExterior() {
-        montonExterior = new Stack[FILAS];
-        for (int i = 0; i < FILAS; i++) {
-            montonExterior[i] = new Stack<>();
-            System.out.print("[" + montonExterior[i] + "]");
+    @Override
+    public String toString() {
+        StringBuilder toret = new StringBuilder();
+        toret.append("\n\t\t\t\t\t ZONA INTERIOR\n");
+        for (int i = 0; i < montonInterior.length; i++) {
+            toret.append(toString(i));
         }
-    }
-
-    public String toStringMontonInterior() {
-        String toret = "";
-        for (int i = 0; i < FILAS; i++) {
-            for (int j = 0; j < COLUMNAS; j++) {
-                toret += "[" + montonInterior[i][j].peek() + "]\t";
-            }
-            toret += "\n";
-        }
-        return toret;
-    }
-
-    public String toStringMontonExterior() {
-        String toret = "";
-        for (int i = 0; i < FILAS; i++) {
-            toret += "[" + montonExterior[i].peek() + "]\t";
-        }
-        return toret;
+        toret.append("\n");
+        toret.append("\n\t\t\t\t\t ZONA EXTERIOR\n");
+        toret.append(toString(4));
+        toret.append("\n");
+        return toret.toString();
     }
 }
-

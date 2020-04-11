@@ -1,136 +1,120 @@
- /*
+/*
   *  Representa al único jugador de la partida, identificado por el nombre
   * Funcionalidad: le da la vuelta a una carta que está boca abajo, escoge una carta para moverla o al montón de descarte
   *                o la mueve encima de otra carta del interior
-  */
- package solitario.Core;
+ */
+package Core;
 
- import solitario.IU.ES;
+import java.util.Stack;
+import IU.ES;
 
- import java.util.Stack;
+/**
+ * @author AEDI
+ */
+public class Jugador {
 
- /**
-  * @author AEDI
-  */
- public class Jugador {
-     private String nombre;
+    private final Mesa mesa;
 
-     public String getNombre() {
-         return nombre;
-     }
+    public Jugador() {
+        mesa = new Mesa();
+        GenerarMesa();
+    }
 
-     public void darVuelta(Stack<Carta> monton) {
-         if (!monton.empty()) {
-             monton.peek().setBocaArriba(true);
-         }
-     }
+    public final void GenerarMesa() {
+        Baraja baraja = new Baraja();
+        for (int fila = 0; fila < Mesa.FILAS; fila++) {
+            for (int columna = 0; columna < Mesa.COLUMNAS; columna++) {
+                try {
+                    colocarCarta(baraja.devolverCarta(), mesa.getMontonInterior(fila, columna));
+                } catch (Exception exc) {
+                    System.err.println("ERROR: " + exc.getMessage());
+                }
+            }
+        }
+        for (int fila = 0; fila < Mesa.FILAS; fila++) {
+            try {
+                colocarCarta(baraja.devolverCarta(), mesa.getMontonInterior(fila, fila));
+                colocarCarta(baraja.devolverCarta(), mesa.getMontonInterior(fila, 3 - fila));
+            } catch (Exception exc) {
+                System.err.println("ERROR: " + exc.getMessage());
+            }
+        }
+        for (int fila = 0; fila < Mesa.FILAS; fila++) {
+            for (int columna = 0; columna < Mesa.COLUMNAS; columna++) {
+                try {
+                    colocarCarta(baraja.devolverCarta(), mesa.getMontonInterior(fila, columna));
+                } catch (Exception exc) {
+                    System.err.println("ERROR: " + exc.getMessage());
+                }
+            }
+        }
+    }
 
-     public void moverCarta(Stack<Carta>[][] montonInterior, Stack<Carta>[] montonExterior) {
+    public Mesa getMesa() {
+        return mesa;
+    }
 
-         System.out.println("Que carta quieres mover?");
-         int numero = ES.pideNumero("número: ");
-         char palo = ES.pidePalo();
-         Carta carta = new Carta(numero, palo);
-         carta.setBocaArriba(true);
+    public void colocarCarta(Carta carta, Stack<Carta> destination) {
+        destination.push(carta);
+    }
 
-         for (int i = 0; i < 4; i++) {
-             for (int j = 0; j < 4; j++) {
-                 if (!montonInterior[i][j].empty() && carta.equals(montonInterior[i][j].peek())) {
+    public void mover(Stack<Carta> origen, Enlace<Stack<Carta>, Boolean> destino) throws Exception {
+        if (!origen.isEmpty()) {
+            if (destino.zona) {
+                if (destino.carta.isEmpty()) {
+                    if (origen.peek().getNumero() == 1) {
+                        colocarCarta(origen.pop(), destino.carta);
+                    } else {
+                        throw new Exception("No se puede mover la carta a la zona exterior");
+                    }
+                } else {
+                    if ((destino.carta.peek().getNumero() == origen.peek().getNumero() - 1) && (destino.carta.peek().getPalo() == origen.peek().getPalo())) {
+                        colocarCarta(origen.pop(), destino.carta);
+                    } else {
+                        throw new Exception("No se puede mover la carta a la zona elegida");
+                    }
+                }
+            } else { 
+                if (destino.carta.isEmpty()) {
+                    System.err.println("No se puede mover la carta a la zona elegida");
+                } else {
+                    if ((destino.carta.peek().getNumero() == origen.peek().getNumero() + 1) && (destino.carta.peek().getPalo() == origen.peek().getPalo())) {
+                        colocarCarta(origen.pop(), destino.carta);
+                    } else {
+                        throw new Exception("No se puede mover la carta a la zona elegida");
+                    }
+                }
+            }
+        } else {
+            throw new Exception("No es posible mover");
+        }
+    }
 
-                     Carta cartaParaMover = montonInterior[i][j].peek();
+    public Stack origen() throws Exception {
+        int numero = 0;
+        while (numero < 1 || numero > 16) {
+            numero = ES.pideNumero("\nIntroduzca la carta que se movera [1 - 16]: ");
+            if (numero < 1 || numero > 16) {
+                System.err.println("Se esperaba un numero [1 - 16]");
+            }
+        }
+        return mesa.getMontonInterior(--numero / 4, numero % 4);
+    }
 
-                     switch (cartaParaMover.getLetraPalo()) {
-                         case 'O':
-                             efectuarMovimiento(montonInterior, montonInterior[i][j], montonExterior[Palos.OROS.getIndexPalo()], montonInterior[i][j].peek());
-                             break;
-                         case 'C':
-                             efectuarMovimiento(montonInterior, montonInterior[i][j], montonExterior[Palos.COPAS.getIndexPalo()], montonInterior[i][j].peek());
-                             break;
-                         case 'E':
-                             efectuarMovimiento(montonInterior, montonInterior[i][j], montonExterior[Palos.ESPADAS.getIndexPalo()], montonInterior[i][j].peek());
-                             break;
-                         case 'B':
-                             efectuarMovimiento(montonInterior, montonInterior[i][j], montonExterior[Palos.BASTOS.getIndexPalo()], montonInterior[i][j].peek());
-                             break;
-                     }
-                 }
-             }
-         }
-     }
-
-     public boolean sePuedeMoverCarta(Stack<Carta> cartasPalo, Carta carta, boolean externo) {
-         Carta cartaSuperior = getCartaSuperior(cartasPalo);
-
-         if (externo) {
-             if (cartaSuperior == null) {
-                 return carta.getNumero() == 1;
-             }
-             if (cartaSuperior.getNumero() == carta.getNumero() - 1) {
-                 return true;
-             }
-             return cartaSuperior.getNumero() == 7 && carta.getNumero() == 10;
-         }
-         if (cartaSuperior == null) {
-             return false;
-         }
-         if (cartaSuperior.getNumero() == carta.getNumero() + 1) {
-             return true;
-         }
-         return cartaSuperior.getNumero() == 10 && carta.getNumero() == 7;
-     }
-
-     private Carta getCartaSuperior(Stack<Carta> cartasPalo) {
-         return cartasPalo.empty() ? null : cartasPalo.peek();
-     }
-
-     private void efectuarMovimiento(Stack<Carta>[][] montonInterior, Stack<Carta> montonInteriorOrigen, Stack<Carta> montonExteriorObjetivo, Carta cartaParaMover) {
-         boolean sePuedeMoverFuera;
-         boolean sePuedeMoverDentro = false;
-         Stack<Carta> montonInteriorObjetivo = null;
-
-         sePuedeMoverFuera = sePuedeMoverCarta(montonExteriorObjetivo, cartaParaMover, true);
-         for (int k = 0; k < 4; k++) {
-             for (int l = 0; l < 4; l++) {
-                 if (sePuedeMoverCarta(montonInterior[k][l], cartaParaMover, false)) {
-                     sePuedeMoverDentro = true;
-                     montonInteriorObjetivo = montonInterior[k][l];
-                 }
-             }
-         }
-         if (sePuedeMoverDentro) {
-             System.out.println("Puedes mover la carta en el montón interior.");
-         } else {
-             System.out.println("No puedes mover la carta en el montón interior.");
-         }
-         if (sePuedeMoverFuera) {
-             System.out.println("Puedes mover la carta al montón exterior.");
-         } else {
-             System.out.println("No puedes mover la carta al montón exterior.");
-         }
-         if (sePuedeMoverDentro && sePuedeMoverFuera) {
-             int op = ES.pideNumero("A donde quieres mover la carta?\n" +
-                     "\t1. Interior\n" +
-                     "\t2. Exterior\n");
-             switch (op) {
-                 case 1:
-                     montonInteriorOrigen.pop();
-                     darVuelta(montonInteriorOrigen);
-                     montonInteriorObjetivo.push(cartaParaMover);
-                     break;
-                 case 2:
-                     montonInteriorOrigen.pop();
-                     darVuelta(montonInteriorOrigen);
-                     montonExteriorObjetivo.push(cartaParaMover);
-                     break;
-             }
-         } else if (sePuedeMoverDentro) {
-             montonInteriorOrigen.pop();
-             darVuelta(montonInteriorOrigen);
-             montonInteriorObjetivo.push(cartaParaMover);
-         } else if (sePuedeMoverFuera) {
-             montonInteriorOrigen.pop();
-             darVuelta(montonInteriorOrigen);
-             montonExteriorObjetivo.push(cartaParaMover);
-         }
-     }
- }
+    public Enlace<Stack<Carta>, Boolean> destino() throws Exception {
+        int numero = 0;
+        Enlace<Stack<Carta>, Boolean> destino;
+        while (numero < 1 || numero > 20) {
+            numero = ES.pideNumero("\nIntroduzca la carta que se movera [1 - 20]: ");
+            if (numero < 1 || numero > 20) {
+                throw new Exception("Se esperaba un numero [1 - 20]");
+            }
+        }
+        if (--numero / 4 != 4) {
+            destino = Enlace.of(mesa.getMontonInterior(numero / 4, numero % 4), false);
+        } else {
+            destino = Enlace.of(mesa.getMontonExterior(numero % 4), true);
+        }
+        return destino;
+    }
+}
