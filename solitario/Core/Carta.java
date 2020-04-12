@@ -18,7 +18,7 @@ public class Carta {
                 counter++;
             }
         }
-        if (counter != 3 || (numero < 1 || numero > 10)) {
+        if (counter != 3 || (numero < 1 || numero > 12 || numero == 8 || numero == 9)) {
             throw new Exception("Carta no valida");
         }
 
@@ -37,15 +37,15 @@ public class Carta {
     @Override
     public String toString() {
         StringBuilder toret = new StringBuilder();
-        if (getNumero() == 8) {
+        if (getNumero() == 10) {
             toret.append("Sota");
         }
-        if (getNumero() == 9) {
+        if (getNumero() == 11) {
             toret.append("Caballo");
         }
-        if (getNumero() == 10) {
+        if (getNumero() == 12) {
             toret.append("Rey");
-        } else if (getNumero() != 8 && getNumero() != 9 && getNumero() != 10) {
+        } else if (getNumero() != 10 && getNumero() != 11 && getNumero() != 12) {
             toret.append(getNumero());
         }
         toret.append(" | ").append(getPalo());

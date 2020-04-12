@@ -82,26 +82,30 @@ public class Mesa {
 
     public String toString(int i) {
         StringBuilder toret = new StringBuilder();
-        toret.append("\n__________________________________________________________________________________________________\n");
-        for (int j = 0; j < montonInterior[0].length; j++) {
-            toret.append("\t Monton ").append((i * montonInterior[0].length) + j + 1).append("\t");
-        }
-        toret.append("\n\n");
-        for (int j = 0; j < montonInterior[0].length; j++) {
-            toret.append("\t");
-            if (i != 4) {
-                if (montonInterior[i][j].isEmpty()) {
-                    toret.append("  [VACIO]").append("\t");
+        try {
+            toret.append("\n__________________________________________________________________________________________________\n");
+            for (int j = 0; j < montonInterior[0].length; j++) {
+                toret.append("\t Monton ").append((i * montonInterior[0].length) + j + 1).append("\t");
+            }
+            toret.append("\n\n");
+            for (int j = 0; j < montonInterior[0].length; j++) {
+                toret.append("\t");
+                if (i != 4) {
+                    if (montonInterior[i][j].isEmpty()) {
+                        toret.append("  [VACIO]").append("\t");
+                    } else {
+                        toret.append(montonInterior[i][j].peek()).append("\t");
+                    }
                 } else {
-                    toret.append(montonInterior[i][j].peek()).append("\t");
-                }
-            } else {
-                if (montonExterior[j].isEmpty()) {
-                    toret.append("  [VACIO]").append("\t");
-                } else {
-                    toret.append(montonExterior[j].peek()).append("\t");
+                    if (montonExterior[j].isEmpty()) {
+                        toret.append("  [VACIO]").append("\t");
+                    } else {
+                        toret.append(montonExterior[j].peek()).append("\t");
+                    }
                 }
             }
+        } catch (Exception exc) {
+            System.err.println(exc.getMessage() + "OK");
         }
         return toret.toString();
     }

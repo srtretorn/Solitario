@@ -17,7 +17,19 @@ public class Baraja {
         for (int num = 1; num <= (40 / Palos.values().length); num++) {
             for (Palos palo : Palos.values()) {
                 try {
-                    baraja.add(new Carta(palo, num));
+                    switch(num){
+                        case 8:
+                            baraja.add(new Carta(palo,10));
+                            break;
+                        case 9:
+                            baraja.add(new Carta(palo,11));
+                            break;
+                        case 10:
+                            baraja.add(new Carta(palo,12));
+                            break;
+                        default:
+                            baraja.add(new Carta(palo,num));
+                    }
                 } catch (Exception exc) {
                     System.err.println("ERROR: " + exc.getMessage());
                 }

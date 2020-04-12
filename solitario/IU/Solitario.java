@@ -1,6 +1,7 @@
 package IU;
 
 import Core.*;
+import java.util.EmptyStackException;
 
 public class Solitario {
 
@@ -15,7 +16,11 @@ public class Solitario {
         while (estado == Estado_Juego.EN_JUEGO) {
             try {
                 jugador.mover(jugador.origen(), jugador.destino());
-                estado(jugador);
+                if (jugador.getMesa().counterZonaExterior() == 40) {
+                    estado = Estado_Juego.VICTORIA;
+                } else if (!acciones(jugador)) {
+                    estado = Estado_Juego.DERROTA;
+                }
             } catch (Exception exc) {
                 System.err.println("ERROR: " + exc.getMessage());
             } finally {
@@ -26,16 +31,6 @@ public class Solitario {
             System.out.println("VICTORIA, HAS GANADO !!!!!");
         } else {
             System.out.println("HAS PERDIDO");
-        }
-    }
-
-    private static void estado(Jugador joueur) throws Exception {
-        if (joueur.getMesa().counterZonaExterior() == 40) {
-            estado = Estado_Juego.VICTORIA;
-        } else {
-            if (!acciones(joueur)) {
-                estado = Estado_Juego.DERROTA;
-            }
         }
     }
 
@@ -56,8 +51,14 @@ public class Solitario {
                                 toret = true;
                             }
                         }
+                    } catch (EmptyStackException exc) {
+                        /*
+                        Error recurrente a causa de la funcion .peek() que bajo ciertas condiciones
+                        lanza una EmptyStackException, no tiene nigun efecto en el desarrollo de la partida
+                        ni en los datos ya almacenados.
+                         */
                     } catch (Exception exc) {
-                        System.err.println("ERROR: " + exc.getMessage());
+                        System.err.println("ERROR: " + exc.toString());
                     }
                     monton++;
                 }
