@@ -58,7 +58,7 @@ public class Jugador {
         destination.push(carta);
     }
 
-    public void mover(Stack<Carta> origen, Enlace<Stack<Carta>, Boolean> destino) throws Exception {
+    public void mover(Stack<Carta> origen, GetZonaMonton<Stack<Carta>, Boolean> destino) throws Exception {
         if (!origen.isEmpty()) {
             if (destino.zona) {
                 if (destino.carta.isEmpty()) {
@@ -74,7 +74,7 @@ public class Jugador {
                         throw new Exception("No se puede mover la carta a la zona elegida");
                     }
                 }
-            } else { 
+            } else {
                 if (destino.carta.isEmpty()) {
                     System.err.println("No se puede mover la carta a la zona elegida");
                 } else {
@@ -101,9 +101,9 @@ public class Jugador {
         return mesa.getMontonInterior(--numero / 4, numero % 4);
     }
 
-    public Enlace<Stack<Carta>, Boolean> destino() throws Exception {
+    public GetZonaMonton<Stack<Carta>, Boolean> destino() throws Exception {
         int numero = 0;
-        Enlace<Stack<Carta>, Boolean> destino;
+        GetZonaMonton<Stack<Carta>, Boolean> destino;
         while (numero < 1 || numero > 20) {
             numero = ES.pideNumero("\nIntroduzca la carta que se movera [1 - 20]: ");
             if (numero < 1 || numero > 20) {
@@ -111,9 +111,9 @@ public class Jugador {
             }
         }
         if (--numero / 4 != 4) {
-            destino = Enlace.of(mesa.getMontonInterior(numero / 4, numero % 4), false);
+            destino = GetZonaMonton.get(mesa.getMontonInterior(numero / 4, numero % 4), false);
         } else {
-            destino = Enlace.of(mesa.getMontonExterior(numero % 4), true);
+            destino = GetZonaMonton.get(mesa.getMontonExterior(numero % 4), true);
         }
         return destino;
     }

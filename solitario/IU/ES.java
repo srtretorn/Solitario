@@ -15,7 +15,6 @@ public class ES {
 
         // Pedir
         return leer.nextLine();
-
     }
 
     public static int pideNumero(String mensaje) {
@@ -31,9 +30,7 @@ public class ES {
                 System.err.println("ERROR Caracter no valido !!!!");
             }
         }
-
         return toret;
-
     }
 
     public static char pidePalo() {

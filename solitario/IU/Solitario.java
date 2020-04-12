@@ -7,10 +7,10 @@ public class Solitario {
 
     private static enum Estado_Juego {
         EN_JUEGO, VICTORIA, DERROTA
-    };
-    private static Estado_Juego estado = Estado_Juego.EN_JUEGO;
+    }
 
     public static void inicioPartida() {
+        Estado_Juego estado = Estado_Juego.EN_JUEGO;
         Jugador jugador = new Jugador();
         System.out.println(jugador.getMesa());
         while (estado == Estado_Juego.EN_JUEGO) {
