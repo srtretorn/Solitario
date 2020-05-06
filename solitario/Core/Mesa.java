@@ -55,16 +55,6 @@ public class Mesa {
         return montonInterior[i][j];
     }
 
-    public int counterZonaInterior() {
-        int toret = 0;
-        for (Stack<Carta>[] filaMontones : montonInterior) {
-            for (Stack<Carta> monton : filaMontones) {
-                toret += monton.size();
-            }
-        }
-        return toret;
-    }
-
     public Stack<Carta> getMontonExterior(int i) throws Exception {
         if (i >= montonExterior.length || i < 0) {
             throw new Exception("Posicion no valida");
@@ -80,7 +70,7 @@ public class Mesa {
         return toret;
     }
 
-    public String toString(int i) {
+    private String toString(int i) {
         StringBuilder toret = new StringBuilder();
         try {
             toret.append("\n__________________________________________________________________________________________________\n");

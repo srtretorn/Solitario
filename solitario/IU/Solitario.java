@@ -5,7 +5,7 @@ import java.util.EmptyStackException;
 
 public class Solitario {
 
-    private static enum Estado_Juego {
+    private enum Estado_Juego {
         EN_JUEGO, VICTORIA, DERROTA
     }
 

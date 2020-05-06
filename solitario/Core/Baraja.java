@@ -38,10 +38,6 @@ public class Baraja {
         Collections.shuffle(baraja);
     }
 
-    public boolean esVacia() {
-        return baraja.isEmpty();
-    }
-
     public Carta devolverCarta() {
         return baraja.pop();
     }
