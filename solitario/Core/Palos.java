@@ -16,7 +16,4 @@ public enum Palos {
         this.i = i;
     }
 
-    public int getIndexPalo() {
-        return i;
-    }
 }
