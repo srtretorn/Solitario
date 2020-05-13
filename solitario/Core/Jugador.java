@@ -23,7 +23,7 @@ public class Jugador {
         for (int fila = 0; fila < Mesa.FILAS; fila++) {
             for (int columna = 0; columna < Mesa.COLUMNAS; columna++) {
                 try {
-                    colocarCarta(baraja.devolverCarta(), mesa.getMontonInterior(fila, columna));
+                    mesa.getMontonInterior(fila, columna).add(baraja.devolverCarta());
                 } catch (Exception exc) {
                     System.err.println("ERROR: " + exc.getMessage());
                 }
@@ -31,8 +31,8 @@ public class Jugador {
         }
         for (int fila = 0; fila < Mesa.FILAS; fila++) {
             try {
-                colocarCarta(baraja.devolverCarta(), mesa.getMontonInterior(fila, fila));
-                colocarCarta(baraja.devolverCarta(), mesa.getMontonInterior(fila, 3 - fila));
+                mesa.getMontonInterior(fila, fila).add(baraja.devolverCarta());
+                mesa.getMontonInterior(fila, 3 - fila).add(baraja.devolverCarta());
             } catch (Exception exc) {
                 System.err.println("ERROR: " + exc.getMessage());
             }
@@ -40,7 +40,7 @@ public class Jugador {
         for (int fila = 0; fila < Mesa.FILAS; fila++) {
             for (int columna = 0; columna < Mesa.COLUMNAS; columna++) {
                 try {
-                    colocarCarta(baraja.devolverCarta(), mesa.getMontonInterior(fila, columna));
+                    mesa.getMontonInterior(fila, columna).add(baraja.devolverCarta());
                 } catch (Exception exc) {
                     System.err.println("ERROR: " + exc.getMessage());
                 }
@@ -52,22 +52,18 @@ public class Jugador {
         return mesa;
     }
 
-    public void colocarCarta(Carta carta, Stack<Carta> destination) {
-        destination.push(carta);
-    }
-
     public void mover(Stack<Carta> origen, GetZonaMonton<Stack<Carta>, Boolean> destino) throws Exception {
         if (!origen.isEmpty()) {
             if (destino.zona) {
                 if (destino.carta.isEmpty()) {
                     if (origen.peek().getNumero() == 1) {
-                        colocarCarta(origen.pop(), destino.carta);
+                        destino.carta.add(origen.pop());
                     } else {
                         throw new Exception("No se puede mover la carta a la zona exterior");
                     }
                 } else {
                     if ((destino.carta.peek().getNumero() == origen.peek().getNumero() - 1) && (destino.carta.peek().getPalo() == origen.peek().getPalo())) {
-                        colocarCarta(origen.pop(), destino.carta);
+                        destino.carta.add(origen.pop());
                     } else {
                         throw new Exception("No se puede mover la carta a la zona elegida");
                     }
@@ -77,7 +73,7 @@ public class Jugador {
                     System.err.println("No se puede mover la carta a la zona elegida");
                 } else {
                     if ((destino.carta.peek().getNumero() == origen.peek().getNumero() + 1) && (destino.carta.peek().getPalo() == origen.peek().getPalo())) {
-                        colocarCarta(origen.pop(), destino.carta);
+                        destino.carta.add(origen.pop());
                     } else {
                         throw new Exception("No se puede mover la carta a la zona elegida");
                     }
