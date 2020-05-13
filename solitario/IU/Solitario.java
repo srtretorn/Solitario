@@ -39,7 +39,7 @@ public class Solitario {
         while (numero < 1 || numero > 16) {
             numero = ES.pideNumero("\nIntroduzca el número del monton [1 - 16]: ");
             if (numero < 1 || numero > 16) {
-                System.err.println("Se esperaba un numero [1 - 16]");
+                throw new Exception("Se esperaba un numero [1 - 16]");
             }
         }
         return jugador.getMesa().getMontonInterior(--numero / 4, numero % 4);
