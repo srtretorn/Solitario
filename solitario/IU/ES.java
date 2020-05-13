@@ -32,30 +32,4 @@ public class ES {
         }
         return toret;
     }
-
-    public static char pidePalo() {
-        int op;
-
-        do {
-            System.out.print("Introduce el palo: \n"
-                    + "\t1. OROS.\n"
-                    + "\t2. COPAS\n"
-                    + "\t3. ESPADAS\n"
-                    + "\t4. BASTOS\n");
-            op = Integer.parseInt(leer.nextLine());
-        } while (op < 1 || op > 4);
-
-        switch (op) {
-            case 1:
-                return 'O';
-            case 2:
-                return 'C';
-            case 3:
-                return 'E';
-            case 4:
-                return 'B';
-            default:
-                return ' ';
-        }
-    }
 }

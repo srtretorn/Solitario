@@ -4,9 +4,7 @@
   *                o la mueve encima de otra carta del interior
  */
 package Core;
-
 import java.util.Stack;
-import IU.ES;
 
 /**
  * @author AEDI
@@ -88,33 +86,5 @@ public class Jugador {
         } else {
             throw new Exception("No es posible mover");
         }
-    }
-
-    public Stack origen() throws Exception {
-        int numero = 0;
-        while (numero < 1 || numero > 16) {
-            numero = ES.pideNumero("\nIntroduzca la carta que se movera [1 - 16]: ");
-            if (numero < 1 || numero > 16) {
-                System.err.println("Se esperaba un numero [1 - 16]");
-            }
-        }
-        return mesa.getMontonInterior(--numero / 4, numero % 4);
-    }
-
-    public GetZonaMonton<Stack<Carta>, Boolean> destino() throws Exception {
-        int numero = 0;
-        GetZonaMonton<Stack<Carta>, Boolean> destino;
-        while (numero < 1 || numero > 20) {
-            numero = ES.pideNumero("\nIntroduzca la carta que se movera [1 - 20]: ");
-            if (numero < 1 || numero > 20) {
-                throw new Exception("Se esperaba un numero [1 - 20]");
-            }
-        }
-        if (--numero / 4 != 4) {
-            destino = GetZonaMonton.get(mesa.getMontonInterior(numero / 4, numero % 4), false);
-        } else {
-            destino = GetZonaMonton.get(mesa.getMontonExterior(numero % 4), true);
-        }
-        return destino;
     }
 }
