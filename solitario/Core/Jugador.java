@@ -4,6 +4,7 @@
   *                o la mueve encima de otra carta del interior
  */
 package Core;
+
 import java.util.Stack;
 
 /**
@@ -54,25 +55,29 @@ public class Jugador {
 
     public void mover(Stack<Carta> origen, GetZonaMonton<Stack<Carta>, Boolean> destino) throws Exception {
         if (!origen.isEmpty()) {
-            if (destino.zona) {
+            if (destino.zona) { // True = Exterior
                 if (destino.carta.isEmpty()) {
                     if (origen.peek().getNumero() == 1) {
                         destino.carta.add(origen.pop());
                     } else {
-                        throw new Exception("No se puede mover la carta a la zona exterior");
+                        throw new Exception("No se puede mover la carta a la zona interior");
                     }
                 } else {
                     if ((destino.carta.peek().getNumero() == origen.peek().getNumero() - 1) && (destino.carta.peek().getPalo() == origen.peek().getPalo())) {
+                        destino.carta.add(origen.pop());
+                    } else if ((destino.carta.peek().getNumero() == 7 && origen.peek().getNumero() == 10) && (destino.carta.peek().getPalo() == origen.peek().getPalo())) {
                         destino.carta.add(origen.pop());
                     } else {
                         throw new Exception("No se puede mover la carta a la zona elegida");
                     }
                 }
-            } else {
+            } else { //False = Interior
                 if (destino.carta.isEmpty()) {
                     System.err.println("No se puede mover la carta a la zona elegida");
                 } else {
                     if ((destino.carta.peek().getNumero() == origen.peek().getNumero() + 1) && (destino.carta.peek().getPalo() == origen.peek().getPalo())) {
+                        destino.carta.add(origen.pop());
+                    } else if ((destino.carta.peek().getNumero() == 10 && origen.peek().getNumero() == 7) && (destino.carta.peek().getPalo() == origen.peek().getPalo())) {
                         destino.carta.add(origen.pop());
                     } else {
                         throw new Exception("No se puede mover la carta a la zona elegida");

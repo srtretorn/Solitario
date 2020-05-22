@@ -114,7 +114,7 @@ public class Mesa {
         toret.append("\n");
         return toret.toString();
     }
-    
+
     public boolean acciones(Jugador joueur) {
         boolean toret = false;
         Mesa mesa = joueur.getMesa();

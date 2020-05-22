@@ -37,7 +37,7 @@ public class Solitario {
     public static Stack origen(Jugador jugador) throws Exception {
         int numero = 0;
         while (numero < 1 || numero > 16) {
-            numero = ES.pideNumero("\nIntroduzca el número del monton [1 - 16]: ");
+            numero = ES.pideNumero("\nIntroduzca el número del monton origen [1 - 16]: ");
             if (numero < 1 || numero > 16) {
                 throw new Exception("Se esperaba un numero [1 - 16]");
             }
@@ -49,7 +49,7 @@ public class Solitario {
         int numero = 0;
         GetZonaMonton<Stack<Carta>, Boolean> destino;
         while (numero < 1 || numero > 20) {
-            numero = ES.pideNumero("\nIntroduzca el número del monton [1 - 20]: ");
+            numero = ES.pideNumero("\nIntroduzca el número del monton destino [1 - 20]: ");
             if (numero < 1 || numero > 20) {
                 throw new Exception("Se esperaba un numero [1 - 20]");
             }

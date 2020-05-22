@@ -3,7 +3,7 @@ package Core;
 /**
  * @author StephanJ98
  * @param <U> Carta
- * @param <V> Zona de la carta True -> Interior , False -> Exterior
+ * @param <V> Zona de la carta True -> Exterior , False -> Interior
  */
 public class GetZonaMonton<U, V> {
 
